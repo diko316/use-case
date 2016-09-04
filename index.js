@@ -1,5 +1,5 @@
 'use strict';
 
-module.exports = {};
+var SYSTEM = require('./lib/system.js');
 
-
+module.exports = SYSTEM['default'] = SYSTEM;
