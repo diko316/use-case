@@ -25,5 +25,5 @@ app.subject('public').
 
 console.log(
     require('util').
-        inspect(usecase.definition, { depth: 10, breakLength: 1 })
+        inspect(app.definition, { depth: 10, breakLength: 1 })
 );
