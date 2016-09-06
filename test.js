@@ -4,9 +4,10 @@ var USECASE = require('./index.js');
 
 
 
-var usecase = USECASE('my-system');
+var app = USECASE('my-system');
 
-usecase.as('guest').
+app.as('guest').
+        emulating('visitor', 'unknown').
         accessing('public').
             can('visit sites').
                 soThat(
@@ -14,8 +15,11 @@ usecase.as('guest').
                     'As tested').
             
             can('login as admin');
+            
+            
 
-usecase.subject('public').
+
+app.subject('public').
             usecase('login').
                 extend('login as admin');
 
