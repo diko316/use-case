@@ -8,16 +8,21 @@ var app = USECASE('my-system');
 app.as('guest').
         emulating('visitor', 'unknown').
         accessing('public').
+            can('login as admin').
+            can('test login');
+            
+app.as('visitor').
+        accessing('public').
             can('visit sites').
                 soThat(
                     'We can show that this works',
-                    'As tested').
-            
-            can('login as admin');
+                    'As tested');
 
 app.subject('public').
             usecase('login').
-                extend('login as admin');
+                extend('login as admin').
+            usecase('test login').
+                generalize('login as admin');
                 
                 
 app.activity('public', 'login as admin').
@@ -29,6 +34,10 @@ app.activity('public', 'login as admin').
         
 //USECASE.run('my-system://guest@public/login as admin', { name: 'test' });
 
+//USECASE.finalize('my system://public/test login');
+USECASE.finalizeActor('my-system', 'guest');
+
+//console.log(USE)
 //console.log(
 //    require('util').
 //        inspect(app.definition, { depth: 10, breakLength: 1 })
