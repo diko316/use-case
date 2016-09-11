@@ -29,24 +29,22 @@ app.activity('public', 'login').
         
 app.activity('public', 'get auth').
         action('showLoginPage').
-        action('authInfo');
-
-console.log('define auth! ');
-console.log(
-app.activity('public', 'server authenticate').
-        action('showLoginPage').
             handler(function (data) {
-                console.log('showing login page ', data);
+                console.log('   !! showing login page ', data);
                 return data;
             }).
         action('authInfo').
             handler(function (data) {
-                console.log('!!auth to server ', data);
+                console.log('   !! auth data input ', data);
                 return data;
-            })
-            
-);
-console.log('....................');
+            });
+
+app.activity('public', 'server authenticate').
+        action('auth to server').
+            handler(function (data) {
+                console.log('   !! authenticating to server ', data);
+                return data;
+            });
         
         
 USECASE.process('my-system://guest@public/login').
