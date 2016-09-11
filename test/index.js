@@ -12,6 +12,7 @@ app.as('guest').
             can('test login');
             
 app.as('visitor').
+        emulating('unknown').
         accessing('public').
             can('visit sites').
                 soThat(
@@ -34,8 +35,8 @@ app.activity('public', 'login as admin').
         
 //USECASE.run('my-system://guest@public/login as admin', { name: 'test' });
 
-//USECASE.finalize('my system://public/test login');
-USECASE.finalizeActor('my-system', 'guest');
+USECASE.finalize('my system://public/test login');
+console.log(USECASE.finalizeActor('my-system', 'guest'));
 
 //console.log(USE)
 //console.log(
