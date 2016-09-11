@@ -1,7 +1,7 @@
 'use strict';
 
 var DEFINE = require('./lib/define/index.js'),
-    RUN = require('./lib/run/index.js'),
+    PROCESS = require('./lib/process/index.js'),
     EXPORTS = DEFINE.define;
 
 
@@ -9,5 +9,4 @@ var DEFINE = require('./lib/define/index.js'),
 module.exports = EXPORTS['default'] = EXPORTS;
 
 // temporary
-EXPORTS.finalize = RUN.finalizeUsecase;
-EXPORTS.finalizeActor = RUN.finalizeActor;
+EXPORTS.process = PROCESS;
