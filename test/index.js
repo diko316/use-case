@@ -3,7 +3,7 @@
 var USECASE = require('../index.js');
 
 
-var app = USECASE('my-system');
+var app = USECASE.system('my-system');
 
 app.as('guest').
         emulating('visitor', 'unknown').
@@ -33,7 +33,7 @@ app.activity('public', 'get auth').
                 console.log('   !! showing login page ', data);
                 return data;
             }).
-        action('authInfo').
+        input('authInfo').
             handler(function (data) {
                 console.log('   !! auth data input ', data);
                 return data;
@@ -47,8 +47,17 @@ app.activity('public', 'server authenticate').
             });
         
         
-USECASE.process('my-system://guest@public/login').
-        run({ name: 'test' });
+var process = USECASE('my-system://guest@public/login');
+
+process.subscribe('prompt',
+    function (process) {
+        console.log('answering prompt!', process.info('prompt'),
+                ' state: ', process.currentState());
+        process.answer({ name: 'my input!' });
+        
+        //process.destroy();
+    });
+process.run({ name: 'test' });
 
 
 //console.log('exist? ', app.hasActivity('public', 'login'));

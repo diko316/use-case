@@ -27,10 +27,10 @@
     "mocha": "^2.5.3"
   },
   "dependencies": {
-    "apptivity": "^1.0.4",
+    "apptivity": "^1.0.7",
     "bluebird": "^3.4.1",
     "eventemitter3": "^1.2.0",
     "immutable": "^3.8.1",
-    "interesting": "^1.0.1"
+    "interesting": "^1.0.2"
   }
 }
