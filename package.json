@@ -1,6 +1,6 @@
 {
   "name": "use-case",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "Role based activities",
   "main": "index.js",
   "scripts": {
