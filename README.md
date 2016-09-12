@@ -31,7 +31,7 @@ USECASE.system("My Auth Website").
                 can("visit web pages").
                 can("login").
                     soThat("I can change my role into admin.").
-        as("admin).
+        as("admin").
             accessing("private area").
                 can("logout").
                     soThat("I can be a visitor/guest again").
@@ -39,7 +39,6 @@ USECASE.system("My Auth Website").
                 can("update my profile").
                     soThat("I can customize my something whatever");
 ```
-
 2. Detail the use-cases and their activities.
 
 ```javascript
@@ -72,7 +71,6 @@ myApp.activity("public area", "authenticate").
             }).
 		action("setAuthToken");
 ```
-
 3. Try running one of the use-case that was completely defined with activity.
 
 ```javascript
