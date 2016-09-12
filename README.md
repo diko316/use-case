@@ -16,11 +16,13 @@ To understand better on how to use this library, we are going to run through a q
 
 ### Quick Start Guide
 
-1. Define all user stories in a script based on what your P.O. or your team has agreed for the project named **My Auth Website**.
-	- *P.O.*: As a **visitor**, I can **visit** the **public** area of the system.
-	- *Team mate*:  As a **visitor** or **guest**, I can **login** and change my role into **admin**.
-	- *P.O.*: As an **admin**, I can **logout** and change my role back into **visitor**.
-	- *P.O.*: As an **admin**, I can **update** my profile in the **users** control panel.
+#### Define all user stories in a script based on what your P.O. or your team has agreed for the project named **My Auth Website**.
+
+1. *P.O.*: As a **visitor**, I can **visit** the **public** area of the system.
+2. *Team mate*:  As a **visitor** or **guest**, I can **login** and change my role into **admin**.
+3. *P.O.*: As an **admin**, I can **logout** and change my role back into **visitor**.
+4. *P.O.*: As an **admin**, I can **update** my profile in the **users** control panel.
+
 ```javascript
 var USECASE = require("use-case");
 USECASE.system("My Auth Website").
@@ -39,7 +41,9 @@ USECASE.system("My Auth Website").
                 can("update my profile").
                     soThat("I can customize my something whatever");
 ```
-2. Detail the use-cases and their activities.
+
+#### Detail the use-cases and their activities.
+
 ```javascript
 var myApp = USECASE.system("My auth website");
 
@@ -70,7 +74,9 @@ myApp.activity("public area", "authenticate").
             }).
 		action("setAuthToken");
 ```
-3. Try running one of the use-case that was completely defined with activity.
+
+#### Try running one of the use-case that was completely defined with activity.
+
 ```javascript
 var process = USECASE("My auth website://guest@public-area/visit web pages");
 
