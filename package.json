@@ -1,6 +1,6 @@
 {
   "name": "use-case",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Role based activities",
   "main": "index.js",
   "scripts": {
@@ -12,8 +12,9 @@
   },
   "keywords": [
     "uml",
-    "apptivity",
-    "use-case"
+    "use-case",
+    "activity",
+    "apptivity"
   ],
   "author": "Diko Tech Slave",
   "license": "MIT",
