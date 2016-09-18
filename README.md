@@ -114,8 +114,9 @@ USECASE("My auth website://guest@public area/visit web pages").
 The following are the methods defined in `USECASE` object found in the examples above.
 
 ##### USECASE(url:*String*):*Process*
-Creates an instance of a Use-case `Process` that can run use-case based on the role and definition provided by `url` parameter.
-> URL is in the form of `[system-name]://[role]@[subject]/[usecase]`
+Creates an instance of a Use-case `Process` based on the system, actor, subject and usecase info extracted from the `url` parameter.
+
+`url` string syntax is `[system-name]://[actor]@[subject]/[usecase]`.
 
 ##### USECASE.system(name:*String*, [contextCallback:*Function*]):*systemDefinitionAPI*
 Defines a `system` from provided `name` parameter if it doesn't exist and returns system definition end point. Optional `contextCallback` parameter is used to access concurrent `system` definitions, preprocess, and configurations inside that function.
