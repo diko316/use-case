@@ -51,13 +51,19 @@ app.activity('public area', 'server authenticate').
                 console.log('   !! authenticating to server ', data);
                 return data;
             });
-        
-        
+
+USECASE.subscribe(
+    "usecase=login",
+    "state-change",
+    function (process, data) {
+        console.log("state change", data.toJS());
+    });
+    
 var process = USECASE('My system://guest@public area/login');
 
 process.subscribe('state-change',
     function (process, data) {
-        console.log("state change", data.toJS());
+        //console.log("state change", data.toJS());
     });
 
 process.subscribe('prompt',
@@ -68,6 +74,7 @@ process.subscribe('prompt',
         
         //process.destroy();
     });
+
 process.run({ name: 'test' }).
     then(function () {
         console.log("*******************************************");

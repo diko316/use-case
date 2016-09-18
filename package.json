@@ -13,8 +13,10 @@
   "keywords": [
     "uml",
     "use-case",
+    "usecase",
     "activity",
-    "apptivity"
+    "apptivity",
+    "finite state machine"
   ],
   "author": "Diko Tech Slave",
   "license": "MIT",
@@ -28,7 +30,7 @@
     "mocha": "^2.5.3"
   },
   "dependencies": {
-    "apptivity": "^1.0.7",
+    "apptivity": "^1.1.1",
     "bluebird": "^3.4.1",
     "eventemitter3": "^1.2.0",
     "immutable": "^3.8.1",

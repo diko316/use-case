@@ -2,20 +2,25 @@
 
 var APPTIVITY = require("apptivity"),
     BUS = require('./lib/bus.js'),
+    CONVENTION = require("./lib/convention"),
     DEFINE = require('./lib/define/index.js'),
     PROCESS = require('./lib/process/index.js'),
     EXPORTS = PROCESS;
-    
 
-function subscribe(url, event, handler) {
-    var Re = RegExp,
-        isUrlRegex = url instanceof Re;
+
+
+/**
+ * TODO:
+ * 1. syntax for url parameter should be:
+ *      "system=[system], actor=[actor], subject=[subject], usecase=[usecase]"
+ */
+function subscribe(query, event, handler) {
         
-    if (!url || (typeof url !== 'string' && !isUrlRegex)) {
-        throw new Error("Invalid [url] parameter");
+    if (!query || typeof query !== 'string') {
+        throw new Error("Invalid [query] parameter");
     }
     
-    if (!event || (typeof event !== 'string' && !(event instanceof Re))) {
+    if (!event || (typeof event !== 'string' && !(event instanceof RegExp))) {
         throw new Error("Invalid [event] name parameter");
     }
     
@@ -25,8 +30,7 @@ function subscribe(url, event, handler) {
     
     return BUS.subscribe(event,
             function (process) {
-                var processUrl = process.info("url");
-                if (isUrlRegex ? url.test(processUrl) : processUrl === url) {
+                if (CONVENTION.createProcessMatcher(query)(process)) {
                     handler.apply(null, arguments);
                 }
             });

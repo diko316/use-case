@@ -1,10 +1,10 @@
 # Use-case
 
-This library aims to effectively plan the software development by following [UML Use-case](https://en.wikipedia.org/wiki/Use_case) based on a rough User Story. Use-case manifests will be detailed later by adding use-case relationships and adding workflows using [Apptivity](https://github.com/diko316/apptivity).
+This library aims to effectively plan the software development by following [UML Use-case](https://en.wikipedia.org/wiki/Use_case) based from User Stories. Use-case manifests will be detailed later by adding use-case relationships and activity workflows using [Apptivity](https://github.com/diko316/apptivity) package.
 
 
 ## Installation
-Use-case is packaged by npm. Source can be found in https://github.com/diko316/use-case
+Use-case is packaged by npm. Source can be found in [github repository](https://github.com/diko316/use-case).
 
 ```sh
 npm install use-case --save
@@ -16,12 +16,15 @@ To better understand how to use this library, we are going to run through a quic
 
 ### Quick Start Guide
 
-#### 1. Define all user stories in a script based on what your P.O. or your team has agreed for the project named **My Auth Website**.
+#### 1. Translate basic User Stories into Use-case manifest using [use-case](https://www.npmjs.com/package/use-case) definition objects.
+The following are the User Stories gathered from the **My Auth Website** app.
 
-1. *P.O.*: As a **visitor**, I can **visit** the **public** area of the system.
-2. *Team mate*:  As a **visitor** or **guest**, I can **login** and change my role into **admin**.
-3. *P.O.*: As an **admin**, I can **logout** and change my role back into **visitor**.
-4. *P.O.*: As an **admin**, I can **update** my profile in the **users** control panel.
+1. As a **visitor**, I can **visit** the **public** area of the system.
+2. As a **visitor** or **guest**, I can **login** and change my role into **admin**.
+3. As an **admin**, I can **logout** and change my role back into **visitor**.
+4. As an **admin**, I can **update** my profile in the **users** control panel.
+
+Above User Stories are now translated into Use-cases using definition objects provided by [use-case](https://www.npmjs.com/package/use-case) package.
 
 ```javascript
 var USECASE = require("use-case");
@@ -44,8 +47,8 @@ USECASE.system("My Auth Website").
 ```
 
 
-#### 2. Detail the use-cases and their activities.
-
+#### 2. Next, Use-cases and its equivalent Activities will be further detailed.
+Use-cases can be defined further into `subjects` namespace and `use-case`. When usecases and it's relationships are all defined, their equivalent activities should also be defined to complete the whole Use-case definitions. 
 
 ```javascript
 var myApp = USECASE.system("My auth website");
@@ -78,8 +81,9 @@ myApp.activity("public area", "authenticate").
 		action("setAuthToken");
 ```
 
+> The example above is for demo purposes that is why Activity definitions and implementations were defined in one script file. The best practice in [Apptivity](https://www.npmjs.com/package/apptivity) is to split definitions (like the `action("setAuthToken");` line above.) from implementations using [Apptivity.task(name:String, runner:Function)](https://www.npmjs.com/package/apptivity#namedTask) method in a separate implementation script file.
 
-#### 3. Try running one of the use-case that was completely defined with activity.
+#### 3. Run one of the completely defined and implemented Use-case.
 
 ```javascript
 
@@ -107,8 +111,7 @@ USECASE("My auth website://guest@public area/visit web pages").
 
 ## API
 
-#### Core
-Static methods defined in `USECASE` when requiring the library with `var USECASE=require("use-case");`
+The following are the methods defined in `USECASE` object found in the examples above.
 
 ##### USECASE(url:*String*):*Process*
 Creates an instance of a Use-case `Process` that can run use-case based on the role and definition provided by `url` parameter.
@@ -131,38 +134,57 @@ module.exports = function(system) {
 
 **lib/my-website/index.js**
 ```javascript
-var USECASE = require("use-case");
+const USECASE = require("use-case");
 
 USECASE.system("my-website", require("./definition.js"));
 ```
 
-##### USECASE.subscribe(url:*String|RegExp*, event:*String|RegExp*, handler:Function):*Function*
-Subscribes an `event` to specific use-case defined by `url` parameter. Available events are the following:
+##### USECASE.subscribe(filter:*String*, event:*String|RegExp*, handler:Function):*Function*
+Subscribes a Process `event` filtered by `filter` parameter.
 
-> **process-start** (**process**:*Process*, **url**:*String*, **input**:*Mixed*)
-> - Dispatched before use-case has starts to run.
->
-> **process-end** (**process**:*Process*, **url**:*String*, **output**:*Mixed*)
-> - Dispatched after use-case has finished running.
->
-> **state-change** (**process**:*Process*, **state**:*Immutable*)
-> - Dispatched when state changes after processing use-case workflow activities.
->
-> **prompt** (**process**:*Process*, **action**:*String*, **initialInput**:*Mixed*)
-> - Dispatched when currently running use-case workflow activity is waiting for an `input`. It can be answered by calling `process.answer(myNewInput)`.
->
-> **answer** (**process**:*Process*, **action**:*String*, **newInput**:*Mixed*)
-> - Dispatched when use-case workflow input has been answered.
->
+`filter` parameter syntax is: `"system=[system-name], actor=[actor-name], subject=[subject-name], usecase|use-case=[use-case-name]"`. All comma-separated `"name=value"` pairs are optional. If `filter` string is malformed, event subscription matches all running process.
+
+Available events are the following:
+
 > **process-create** (**process**:*Process*)
-> - Dispatched after Process is instantiated.
+> - `"process-create"` event is dispatched after Process is instantiated.
 >
 > **process-destroy** (**process**:*Process*)
-> - Dispatched before Process is destroyed undergoing destruction phase.
+> - `"process-destroy"` event is dispatched before Process is destroyed undergoing destruction phase.
+>
+> **process-start** (**process**:*Process*, **url**:*String*, **input**:*Mixed*)
+> - `"process-start"` event is dispatched before use-case process starts running.
+>
+> **process-end** (**process**:*Process*, **url**:*String*, **output**:*Mixed*)
+> - `"process-end"` event is dispatched after use-case process has finished running.
+>
+> **state-change** (**process**:*Process*, **state**:*Immutable*)
+> - `"state-change"` event is dispatched when use-case process changes state data. State data are [Immutable](https://www.npmjs.com/package/immutable) objects based from published events of a running [apptivity](https://www.npmjs.com/package/apptivity) workflow session.
+>
+>  The immutable state data object has the following properties:
+
+```javascript
+var stateData = Immutable.fromJS({
+	url: "[system-name]://[actor]@[subject]/[usecase]",
+	activity: "[system-name]://[subject]/[usecase]",
+    action: "[apptivity-action-name]",
+    state: "[apptivity-fsm-state]",
+    input: { ... [apptivity action input] },
+  	data: { ... [apptivity action output] }
+});
+```
+
+> **prompt** (**process**:*Process*, **action**:*String*, **initialInput**:*Mixed*)
+> - `"prompt"` event is dispatched when currently running workflow session is waiting for an `input`. It can be answered by calling `process.answer(myInput)` or manually calling `workflowSession.answer(myInput)` if workflow session is accessible.
+>
+> **answer** (**process**:*Process*, **action**:*String*, **newInput**:*Mixed*)
+> - `"answer"` event is dispatched when workflow session `input` has been answered.
+>
+
 
 ##### USECASE.activity(activityName:*String*):*Activity*
 
-Defines `Activity` used for options parameters in **condition** activity or sub-processes parameters in **fork** activity. The same method defined in [apptivity.activity()](https://github.com/diko316/apptivity) package.
+Defines an `Activity` used as option parameters of **condition** action or sub-processe parameters of **fork** action. This method is an alias of [apptivity.activity(name:String)](https://www.npmjs.com/package/apptivity#workflowactivityactivitynamestringactivity) .
 
 (To be continued... very sleepy!)
 
