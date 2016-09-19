@@ -1,6 +1,6 @@
 {
   "name": "use-case",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Role based activities",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,9 @@
     "url": "git+https://diko316@github.com/diko316/use-case.git"
   },
   "keywords": [
-    "uml",
-    "use-case",
     "usecase",
+    "use-case",
+    "uml",
     "activity",
     "apptivity",
     "finite state machine"

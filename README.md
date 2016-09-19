@@ -16,7 +16,7 @@ To better understand how to use this library, we are going to run through a quic
 
 ### Quick Start Guide
 
-#### 1. Translate basic User Stories into Use-case manifest using [use-case](https://www.npmjs.com/package/use-case) definition objects.
+#### 1. Translate User Stories into Use-case manifest using [use-case](https://www.npmjs.com/package/use-case) definition objects.
 The following are the User Stories gathered from the **My Auth Website** app.
 
 1. As a **visitor**, I can **visit** the **public** area of the system.
@@ -24,7 +24,7 @@ The following are the User Stories gathered from the **My Auth Website** app.
 3. As an **admin**, I can **logout** and change my role back into **visitor**.
 4. As an **admin**, I can **update** my profile in the **users** control panel.
 
-Above User Stories are now translated into Use-cases using definition objects provided by [use-case](https://www.npmjs.com/package/use-case) package.
+Below is the sample translation of User Stories into Use-cases using [use-case](https://www.npmjs.com/package/use-case) definition object.
 
 ```javascript
 var USECASE = require("use-case");
@@ -47,8 +47,8 @@ USECASE.system("My Auth Website").
 ```
 
 
-#### 2. Next, Use-cases and its equivalent Activities will be further detailed.
-Use-cases can be defined further into `subjects` namespace and `use-case`. When usecases and it's relationships are all defined, their equivalent activities should also be defined to complete the whole Use-case definitions. 
+#### 2. Further detail the Use-cases and Activities.
+Use-cases can be defined further into `subjects` namespace and specific `use-case`. When usecases and it's relationships are all defined, their equivalent activities should also be defined to complete the whole Use-case definitions. 
 
 ```javascript
 var myApp = USECASE.system("My auth website");
@@ -81,9 +81,10 @@ myApp.activity("public area", "authenticate").
 		action("setAuthToken");
 ```
 
-> The example above is for demo purposes that is why Activity definitions and implementations were defined in one script file. The best practice in [Apptivity](https://www.npmjs.com/package/apptivity) is to split definitions (like the `action("setAuthToken");` line above.) from implementations using [Apptivity.task(name:String, runner:Function)](https://www.npmjs.com/package/apptivity#namedTask) method in a separate implementation script file.
+> The example above is for demo purposes only. That is why, Activity definitions and implementations were defined in one script file. The best practice in coding [Apptivity](https://www.npmjs.com/package/apptivity) is to split definitions (like the `action("setAuthToken");` line above.) from implementations using [Apptivity.task(name:String, runner:Function)](https://www.npmjs.com/package/apptivity#namedTask) method in a separate implementation script file.
 
-#### 3. Run one of the completely defined and implemented Use-case.
+#### 3. Run a completely defined Use-case.
+Complete Use-cases are use-cases having complete definitions of Actor, Subject, optional Usecase relationships, and Activity within the System. Use-cases cannot run using the code below if it is not completely defined.
 
 ```javascript
 
@@ -111,33 +112,42 @@ USECASE("My auth website://guest@public area/visit web pages").
 
 ## API
 
+### Main USECASE `Function` and method properties.
+
 The following are the methods defined in `USECASE` object found in the examples above.
 
 ##### USECASE(url:*String*):*Process*
-Creates an instance of a Use-case `Process` based on the system, actor, subject and usecase info extracted from the `url` parameter.
+Creates an instance of a Use-case `Process` using system, actor, subject and usecase info extracted from the `url` parameter.
 
 `url` string syntax is `[system-name]://[actor]@[subject]/[usecase]`.
 
-##### USECASE.system(name:*String*, [contextCallback:*Function*]):*systemDefinitionAPI*
-Defines a `system` from provided `name` parameter if it doesn't exist and returns system definition end point. Optional `contextCallback` parameter is used to access concurrent `system` definitions, preprocess, and configurations inside that function.
+
+##### USECASE.system(name:*String*, [contextCallback:*Function*]):*SystemDefinition*
+Defines a `system` named after its `name` parameter. If system do not exist, the method will create one. Optional `contextCallback` parameter is used to access concurrent `system` definitions, preprocess, and configurations inside the callback function.
 
 
-Example in CommonJS
+Example of organizing modules in CommonJS 
+
 
 **lib/my-website/definitions.js**
 
-```javacript
-module.exports = function(system) {
-	system.as("guest").
-            emulating("visitor");
-};
-```
-
-**lib/my-website/index.js**
 ```javascript
 const USECASE = require("use-case");
 
-USECASE.system("my-website", require("./definition.js"));
+USECASE.system("my-website",
+			require("./definition.js"));
+
+// ... and other definitions
+```
+
+**lib/my-website/route/guest.js**
+```javascript
+module.exports = function(system) {
+
+system.as("guest").
+            emulating("visitor");
+};
+
 ```
 
 ##### USECASE.subscribe(filter:*String*, event:*String|RegExp*, handler:Function):*Function*
@@ -185,7 +195,17 @@ var stateData = Immutable.fromJS({
 
 ##### USECASE.activity(activityName:*String*):*Activity*
 
-Defines an `Activity` used as option parameters of **condition** action or sub-processe parameters of **fork** action. This method is an alias of [apptivity.activity(name:String)](https://www.npmjs.com/package/apptivity#workflowactivityactivitynamestringactivity) .
+Defines an `Activity` used as option parameters of `condition` action or sub-processe parameters of `fork` action.
+
+This method is an alias of [apptivity.activity(name:String)](https://www.npmjs.com/package/apptivity#workflowactivityactivitynamestringactivity) .
+
+### System Definition Object
+
+#### systemDefinition.as(actorName:*String*, [contextCallback:*Function*]):*ActorDefinition*
+
+#### systemDefinition.subject(subjectName:*String*, [contextCallback:*Function*]):*SubjectDefinition*
+
+#### systemDefinition.activity(activityName:*String*, usecaseName:*String*, [contextCallback:*Function*]):*ActivityDefinition*
 
 (To be continued... very sleepy!)
 
