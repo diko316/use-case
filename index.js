@@ -9,11 +9,9 @@ var APPTIVITY = require("apptivity"),
 
 
 
-/**
- * TODO:
- * 1. syntax for url parameter should be:
- *      "system=[system], actor=[actor], subject=[subject], usecase=[usecase]"
- */
+// url parameter should be:
+//      "system=[system], actor=[actor], subject=[subject], usecase=[usecase]"
+
 function subscribe(query, event, handler) {
         
     if (!query || typeof query !== 'string') {

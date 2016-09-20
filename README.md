@@ -202,10 +202,114 @@ This method is an alias of [apptivity.activity(name:String)](https://www.npmjs.c
 ### System Definition Object
 
 #### systemDefinition.as(actorName:*String*, [contextCallback:*Function*]):*ActorDefinition*
+Creates an Actor if specified `actorName` actor do not exist and returns an `actorDefinition` object for chain-calling actor definitions.
+
+If `contextCallback` optional parameter is provided, it will be called with `ActorDefinition` object of `actorName` for further actor definition. This will come in handy when actor definitions are required from other module files.
+
+`contextCallback` will be called with `actorDefinition` object as in:
+> **contextCallback**(**actorDefinition**:*ActorDefinition*)
+
+Example of using `contextCallback` to split `"guest"` actor definitions from `"system"`.
+
+file: **/my-auth-website/index.js**
+```javascript
+
+require("use-case").
+	system("My Auth Website").
+        as("guest", require("./actor/guest.js"));
+```
+
+file: **/my-auth-website/actor/guest.js**
+```javascript
+function defineActor(asGuest) {
+    asGuest.
+        accessing("public area").
+            can("visit web pages").
+                soThat("I will have an overview of the system.").
+
+            can("login").
+                soThat("I can change role and further control the system");
+};
+
+module.exports = defineActor;
+```
 
 #### systemDefinition.subject(subjectName:*String*, [contextCallback:*Function*]):*SubjectDefinition*
 
-#### systemDefinition.activity(activityName:*String*, usecaseName:*String*, [contextCallback:*Function*]):*ActivityDefinition*
+Creates Subject namespace if specified `subjectName` subject do not exist and returns `subjectDefinition` object for chain-calling subject definitions.
+
+`contextCallback` will be called with `subjectDefinition` object as in:
+> **contextCallback**(**subjectDefinition**:*SubjectDefinition*)
+
+#### systemDefinition.activity(subject:*String*, usecase:*String*, [contextCallback:*Function*]):*ActivityDefinition*
+
+Creates Subject and Use-case specified by `subject` and `usecase` parameters if they do not exist and returns [Apptivity](https://www.npmjs.com/package/apptivity#workflownamestringsessionapi) workflow definition object to further detail the Use-case activity.
+
+`contextCallback` will be called with `workflowActivity`, `subject` and `usecase` as in:
+> **contextCallback**(**workflowActivity**:*Activity*, **subject**:*String*, **usecase**:*String*)
+
+### Actor Definition Object
+
+#### actorDefinition.emulating(actor:*String*, [actor:*String*, ...]):*ActorDefinition*
+
+Generalize Actor by inheriting Use-cases specified by `actor` parameters.
+
+#### actorDefinition.accessing(subjectName:*String*, [contextCallback:*Function*]):*ActorDefinition*
+
+Creates Subject namespace if specified `subjectName` subject do not exist and changes the default Subject context specified by `subjectName` parameter for the next Use-case chain-definitions. It returns `actorDefinition` object for chain-calling actor definitions.
+
+`contextCallback` will be called with `actorDefinition` object as in:
+> **contextCallback**(**actorDefinition**:*ActorDefinition*)
+
+#### actorDefinition.can(usecase:*String*, [contextCallback:*Function*]):*ActorDefinition*
+
+Creates Use-case within the default Subject context if specified `usecase` do not exist and returns `actorDefinition` object for chain-calling actor or use-case definitions.
+
+> **Warning!** calling this method without defining default Subject context with `actorDefinition.accessing(subjectName)` will result in a fatal error
+
+`contextCallback` will be called with `actorDefinition` object as in:
+> **contextCallback**(**actorDefinition**:*ActorDefinition*)
+
+
+#### actorDefinition.soThat([description:*String*, ...]]):*ActorDefinition*
+
+Describes the currently defined Use-case with `description` parameters for documentation purposes.
+
+> **Warning!** calling this method without defining default Subject and Use-case context with `actorDefinition.accessing(subjectName)` and `actorDefinition.can(usecase)` will result in a fatal error
+
+### Subject Definition Object
+
+#### subjectDefinition.usecase(usecase:*String*, [contextCallback:*Function*]):*SubjectDefinition*
+
+#### subjectDefinition.extend([subject:*String*,] usecase:*String*, [condition:*Function*]]):*SubjectDefinition*
+
+#### subjectDefinition.include([subject:*String*,] usecase:*String*):*SubjectDefinition*
+
+#### subjectDefinition.generalize([subject:*String*,] usecase:*String*):*SubjectDefinition*
+
+### Process Object
+
+#### process.info(propertyName:*String*):*Mixed*
+
+#### process.currentState():*Object|null*
+
+#### process.run(data:*Mixed*):*Promise*
+
+#### process.runOnce(data:*Mixed*):*Promise*
+
+#### process.reset():*Process*
+
+#### process.current():*Process*
+
+#### process.previous():*Process*
+
+#### process.next():*Process*
+
+#### process.subscribe(event:*String|RegExp*, handler:*Function*):*Function*
+
+#### process.answer(input:*Mixed*):*Process*
+
+#### process.destroy():*Process*
 
 (To be continued... very sleepy!)
 
