@@ -81,7 +81,7 @@ myApp.activity("public area", "authenticate").
 		action("setAuthToken");
 ```
 
-> The example above is for demo purposes only. That is why, Activity definitions and implementations were defined in one script file. The best practice in coding [Apptivity](https://www.npmjs.com/package/apptivity) is to split definitions (like the `action("setAuthToken");` line above.) from implementations using [Apptivity.task(name:String, runner:Function)](https://www.npmjs.com/package/apptivity#namedTask) method in a separate implementation script file.
+> The example above is for demo purposes only. That is why, Activity definitions and implementations were defined in one script file. The best practice in coding [Apptivity](https://diko316.github.io/apptivity) is to split definitions (like the `action("setAuthToken");` line above.) from implementations using [Apptivity.task(name:String, runner:Function)](https://diko316.github.io/apptivity/#namedTask) method in a separate implementation script file.
 
 #### 3. Run a completely defined Use-case.
 Complete Use-cases are use-cases having complete definitions of Actor, Subject, optional Usecase relationships, and Activity within the System. Use-cases cannot run using the code below if it is not completely defined.
