@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Use-case by diko316</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Use-case</h1>
+      <h2 class="project-tagline">UML Use-case implementation for large Applications</h2>
+      <a href="https://github.com/diko316/use-case" class="btn">View on GitHub</a>
+      <a href="https://github.com/diko316/use-case/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/diko316/use-case/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="use-case" class="anchor" href="#use-case" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use-case</h1>
+
+<p>This library aims to effectively plan the software development by following <a href="https://en.wikipedia.org/wiki/Use_case">UML Use-case</a> based from User Stories. Use-case manifests will be detailed later by adding use-case relationships and activity workflows using <a href="https://github.com/diko316/apptivity">Apptivity</a> package.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Use-case is packaged by npm. Source can be found in <a href="https://github.com/diko316/use-case">github repository</a>.</p>
+
+<div class="highlight highlight-source-shell"><pre>npm install use-case --save</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>To better understand how to use this library, we are going to run through a quick start guide.</p>
+
+<h3>
+<a id="quick-start-guide" class="anchor" href="#quick-start-guide" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Start Guide</h3>
+
+<h4>
+<a id="1-translate-user-stories-into-use-case-manifest-using-use-case-definition-objects" class="anchor" href="#1-translate-user-stories-into-use-case-manifest-using-use-case-definition-objects" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Translate User Stories into Use-case manifest using <a href="https://www.npmjs.com/package/use-case">use-case</a> definition objects.</h4>
+
+<p>The following are the User Stories gathered from the <strong>My Auth Website</strong> app.</p>
+
+<ol>
+<li>As a <strong>visitor</strong>, I can <strong>visit</strong> the <strong>public</strong> area of the system.</li>
+<li>As a <strong>visitor</strong> or <strong>guest</strong>, I can <strong>login</strong> and change my role into <strong>admin</strong>.</li>
+<li>As an <strong>admin</strong>, I can <strong>logout</strong> and change my role back into <strong>visitor</strong>.</li>
+<li>As an <strong>admin</strong>, I can <strong>update</strong> my profile in the <strong>users</strong> control panel.</li>
+</ol>
+
+<p>Below is the sample translation of User Stories into Use-cases using <a href="https://www.npmjs.com/package/use-case">use-case</a> definition object.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> <span class="pl-c1">USECASE</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>use-case<span class="pl-pds">"</span></span>);
+<span class="pl-c1">USECASE</span>.<span class="pl-en">system</span>(<span class="pl-s"><span class="pl-pds">"</span>My Auth Website<span class="pl-pds">"</span></span>).
+        <span class="pl-en">as</span>(<span class="pl-s"><span class="pl-pds">"</span>guest<span class="pl-pds">"</span></span>).
+            <span class="pl-en">emulating</span>(<span class="pl-s"><span class="pl-pds">"</span>visitor<span class="pl-pds">"</span></span>).
+        <span class="pl-en">as</span>(<span class="pl-s"><span class="pl-pds">"</span>visitor<span class="pl-pds">"</span></span>).
+            <span class="pl-en">accessing</span>(<span class="pl-s"><span class="pl-pds">"</span>public area<span class="pl-pds">"</span></span>).
+                <span class="pl-en">can</span>(<span class="pl-s"><span class="pl-pds">"</span>visit web pages<span class="pl-pds">"</span></span>).
+                <span class="pl-en">can</span>(<span class="pl-s"><span class="pl-pds">"</span>login<span class="pl-pds">"</span></span>).
+                    <span class="pl-en">soThat</span>(<span class="pl-s"><span class="pl-pds">"</span>I can change my role into admin.<span class="pl-pds">"</span></span>,
+                            <span class="pl-s"><span class="pl-pds">"</span>Or, change role depending on what is assigned after server authentication.<span class="pl-pds">"</span></span>).
+        <span class="pl-en">as</span>(<span class="pl-s"><span class="pl-pds">"</span>admin<span class="pl-pds">"</span></span>).
+            <span class="pl-en">accessing</span>(<span class="pl-s"><span class="pl-pds">"</span>private area<span class="pl-pds">"</span></span>).
+                <span class="pl-en">can</span>(<span class="pl-s"><span class="pl-pds">"</span>logout<span class="pl-pds">"</span></span>).
+                    <span class="pl-en">soThat</span>(<span class="pl-s"><span class="pl-pds">"</span>I can be a visitor/guest again.<span class="pl-pds">"</span></span>).
+            <span class="pl-en">accessing</span>(<span class="pl-s"><span class="pl-pds">"</span>users control<span class="pl-pds">"</span></span>)
+                <span class="pl-en">can</span>(<span class="pl-s"><span class="pl-pds">"</span>update my profile<span class="pl-pds">"</span></span>).
+                    <span class="pl-en">soThat</span>(<span class="pl-s"><span class="pl-pds">"</span>I can customize my something-whatever.<span class="pl-pds">"</span></span>);</pre></div>
+
+<h4>
+<a id="2-further-detail-the-use-cases-and-activities" class="anchor" href="#2-further-detail-the-use-cases-and-activities" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Further detail the Use-cases and Activities.</h4>
+
+<p>Use-cases can be defined further into <code>subjects</code> namespace and specific <code>use-case</code>. When usecases and it's relationships are all defined, their equivalent activities should also be defined to complete the whole Use-case definitions. </p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> myApp <span class="pl-k">=</span> <span class="pl-c1">USECASE</span>.<span class="pl-en">system</span>(<span class="pl-s"><span class="pl-pds">"</span>My auth website<span class="pl-pds">"</span></span>);
+
+<span class="pl-c">// don't worry, system, subject, usecase, and actors are case-insensitive</span>
+<span class="pl-smi">myApp</span>.<span class="pl-en">subject</span>(<span class="pl-s"><span class="pl-pds">"</span>Public area<span class="pl-pds">"</span></span>).
+        <span class="pl-en">usecase</span>(<span class="pl-s"><span class="pl-pds">"</span>navigate<span class="pl-pds">"</span></span>).
+        <span class="pl-en">usecase</span>(<span class="pl-s"><span class="pl-pds">"</span>login<span class="pl-pds">"</span></span>).
+            <span class="pl-en">extend</span>(<span class="pl-s"><span class="pl-pds">"</span>get auth info<span class="pl-pds">"</span></span>),
+            <span class="pl-en">include</span>(<span class="pl-s"><span class="pl-pds">"</span>authenticate<span class="pl-pds">"</span></span>);
+
+<span class="pl-c">// here you're going to define activity of the defined usecases</span>
+<span class="pl-smi">myApp</span>.<span class="pl-en">activity</span>(<span class="pl-s"><span class="pl-pds">"</span>public area<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>navigate<span class="pl-pds">"</span></span>).
+        <span class="pl-en">input</span>(<span class="pl-s"><span class="pl-pds">"</span>choosePage<span class="pl-pds">"</span></span>).
+        <span class="pl-en">action</span>(<span class="pl-s"><span class="pl-pds">"</span>navigate<span class="pl-pds">"</span></span>);
+
+<span class="pl-smi">myApp</span>.<span class="pl-en">activity</span>(<span class="pl-s"><span class="pl-pds">"</span>public area<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>login<span class="pl-pds">"</span></span>).
+        <span class="pl-en">action</span>(<span class="pl-s"><span class="pl-pds">"</span>validate<span class="pl-pds">"</span></span>);
+
+<span class="pl-smi">myApp</span>.<span class="pl-en">activity</span>(<span class="pl-s"><span class="pl-pds">"</span>public area<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>get auth info<span class="pl-pds">"</span></span>).
+        <span class="pl-en">action</span>(<span class="pl-s"><span class="pl-pds">"</span>showLoginPage<span class="pl-pds">"</span></span>).
+        <span class="pl-en">input</span>(<span class="pl-s"><span class="pl-pds">"</span>authData<span class="pl-pds">"</span></span>);
+
+<span class="pl-smi">myApp</span>.<span class="pl-en">activity</span>(<span class="pl-s"><span class="pl-pds">"</span>public area<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>authenticate<span class="pl-pds">"</span></span>).
+        <span class="pl-en">action</span>(<span class="pl-s"><span class="pl-pds">"</span>authenticate<span class="pl-pds">"</span></span>).
+            <span class="pl-en">handler</span>(<span class="pl-k">function</span> (<span class="pl-smi">input</span>) {
+                <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>authenticating to backend? <span class="pl-pds">"</span></span>, input);
+                <span class="pl-k">return</span> <span class="pl-smi">client</span>.<span class="pl-en">authToBackend</span>(input);
+            }).
+        <span class="pl-en">action</span>(<span class="pl-s"><span class="pl-pds">"</span>setAuthToken<span class="pl-pds">"</span></span>);</pre></div>
+
+<blockquote>
+<p>The example above is for demo purposes only. That is why, Activity definitions and implementations were defined in one script file. The best practice in coding <a href="https://www.npmjs.com/package/apptivity">Apptivity</a> is to split definitions (like the <code>action("setAuthToken");</code> line above.) from implementations using <a href="https://www.npmjs.com/package/apptivity#namedTask">Apptivity.task(name:String, runner:Function)</a> method in a separate implementation script file.</p>
+</blockquote>
+
+<h4>
+<a id="3-run-a-completely-defined-use-case" class="anchor" href="#3-run-a-completely-defined-use-case" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Run a completely defined Use-case.</h4>
+
+<p>Complete Use-cases are use-cases having complete definitions of Actor, Subject, optional Usecase relationships, and Activity within the System. Use-cases cannot run using the code below if it is not completely defined.</p>
+
+<div class="highlight highlight-source-js"><pre>
+<span class="pl-en">USECASE</span>(<span class="pl-s"><span class="pl-pds">"</span>My auth website://guest@public area/visit web pages<span class="pl-pds">"</span></span>).
+    <span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">"</span>state-change<span class="pl-pds">"</span></span>,
+        <span class="pl-k">function</span> (<span class="pl-c1">process</span>, <span class="pl-smi">state</span>) {
+            <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>current state <span class="pl-pds">"</span></span>, <span class="pl-smi">state</span>.<span class="pl-en">toJS</span>());
+        }).
+    <span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">"</span>prompt<span class="pl-pds">"</span></span>,
+        <span class="pl-k">function</span> (<span class="pl-c1">process</span>, <span class="pl-smi">action</span>, <span class="pl-smi">initialInput</span>) {
+            <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>what to do with prompts? <span class="pl-pds">"</span></span>, action, initialInput);
+            <span class="pl-c1">process</span>.<span class="pl-en">answer</span>({ value<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>my answer to this prompt.<span class="pl-pds">"</span></span> });
+        }).
+    <span class="pl-en">run</span>({ page<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>/about_us.html<span class="pl-pds">"</span></span> }).
+        <span class="pl-en">then</span>(<span class="pl-k">function</span> (<span class="pl-smi">result</span>) {
+            <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>showing about us? <span class="pl-pds">"</span></span>, result);
+            <span class="pl-k">return</span> result;
+        },
+        <span class="pl-k">function</span> (<span class="pl-smi">error</span>) {
+            <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>yes! an error!<span class="pl-pds">'</span></span>, error);
+            <span class="pl-k">return</span> <span class="pl-c1">Promise</span>.<span class="pl-en">reject</span>(error);
+        });
+</pre></div>
+
+<h2>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API</h2>
+
+<h3>
+<a id="main-usecase-function-and-method-properties" class="anchor" href="#main-usecase-function-and-method-properties" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Main USECASE <code>Function</code> and method properties.</h3>
+
+<p>The following are the methods defined in <code>USECASE</code> object found in the examples above.</p>
+
+<h5>
+<a id="usecaseurlstringprocess" class="anchor" href="#usecaseurlstringprocess" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>USECASE(url:<em>String</em>):<em>Process</em>
+</h5>
+
+<p>Creates an instance of a Use-case <code>Process</code> using system, actor, subject and usecase info extracted from the <code>url</code> parameter.</p>
+
+<p><code>url</code> string syntax is <code>[system-name]://[actor]@[subject]/[usecase]</code>.</p>
+
+<h5>
+<a id="usecasesystemnamestring-contextcallbackfunctionsystemdefinition" class="anchor" href="#usecasesystemnamestring-contextcallbackfunctionsystemdefinition" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>USECASE.system(name:<em>String</em>, [contextCallback:<em>Function</em>]):<em>SystemDefinition</em>
+</h5>
+
+<p>Defines a <code>system</code> named after its <code>name</code> parameter. If system do not exist, the method will create one. Optional <code>contextCallback</code> parameter is used to access concurrent <code>system</code> definitions, preprocess, and configurations inside the callback function.</p>
+
+<p>Example of organizing modules in CommonJS </p>
+
+<p><strong>lib/my-website/definitions.js</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">USECASE</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>use-case<span class="pl-pds">"</span></span>);
+
+<span class="pl-c1">USECASE</span>.<span class="pl-en">system</span>(<span class="pl-s"><span class="pl-pds">"</span>my-website<span class="pl-pds">"</span></span>,
+            <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>./definition.js<span class="pl-pds">"</span></span>));
+
+<span class="pl-c">// ... and other definitions</span></pre></div>
+
+<p><strong>lib/my-website/route/guest.js</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c1">module</span>.<span class="pl-en">exports</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">system</span>) {
+
+<span class="pl-smi">system</span>.<span class="pl-en">as</span>(<span class="pl-s"><span class="pl-pds">"</span>guest<span class="pl-pds">"</span></span>).
+            <span class="pl-en">emulating</span>(<span class="pl-s"><span class="pl-pds">"</span>visitor<span class="pl-pds">"</span></span>);
+};
+</pre></div>
+
+<h5>
+<a id="usecasesubscribefilterstring-eventstringregexp-handlerfunctionfunction" class="anchor" href="#usecasesubscribefilterstring-eventstringregexp-handlerfunctionfunction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>USECASE.subscribe(filter:<em>String</em>, event:<em>String|RegExp</em>, handler:Function):<em>Function</em>
+</h5>
+
+<p>Subscribes a Process <code>event</code> filtered by <code>filter</code> parameter.</p>
+
+<p><code>filter</code> parameter syntax is: <code>"system=[system-name], actor=[actor-name], subject=[subject-name], usecase|use-case=[use-case-name]"</code>. All comma-separated <code>"name=value"</code> pairs are optional. If <code>filter</code> string is malformed, event subscription matches all running process.</p>
+
+<p>Available events are the following:</p>
+
+<blockquote>
+<p><strong>process-create</strong> (<strong>process</strong>:<em>Process</em>)</p>
+
+<ul>
+<li>
+<code>"process-create"</code> event is dispatched after Process is instantiated.</li>
+</ul>
+
+<p><strong>process-destroy</strong> (<strong>process</strong>:<em>Process</em>)</p>
+
+<ul>
+<li>
+<code>"process-destroy"</code> event is dispatched before Process is destroyed undergoing destruction phase.</li>
+</ul>
+
+<p><strong>process-start</strong> (<strong>process</strong>:<em>Process</em>, <strong>url</strong>:<em>String</em>, <strong>input</strong>:<em>Mixed</em>)</p>
+
+<ul>
+<li>
+<code>"process-start"</code> event is dispatched before use-case process starts running.</li>
+</ul>
+
+<p><strong>process-end</strong> (<strong>process</strong>:<em>Process</em>, <strong>url</strong>:<em>String</em>, <strong>output</strong>:<em>Mixed</em>)</p>
+
+<ul>
+<li>
+<code>"process-end"</code> event is dispatched after use-case process has finished running.</li>
+</ul>
+
+<p><strong>state-change</strong> (<strong>process</strong>:<em>Process</em>, <strong>state</strong>:<em>Immutable</em>)</p>
+
+<ul>
+<li>
+<p><code>"state-change"</code> event is dispatched when use-case process changes state data. State data are <a href="https://www.npmjs.com/package/immutable">Immutable</a> objects based from published events of a running <a href="https://www.npmjs.com/package/apptivity">apptivity</a> workflow session.</p>
+
+<p>The immutable state data object has the following properties:</p>
+</li>
+</ul>
+</blockquote>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> stateData <span class="pl-k">=</span> <span class="pl-smi">Immutable</span>.<span class="pl-en">fromJS</span>({
+    url<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>[system-name]://[actor]@[subject]/[usecase]<span class="pl-pds">"</span></span>,
+    activity<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>[system-name]://[subject]/[usecase]<span class="pl-pds">"</span></span>,
+    action<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>[apptivity-action-name]<span class="pl-pds">"</span></span>,
+    state<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>[apptivity-fsm-state]<span class="pl-pds">"</span></span>,
+    input<span class="pl-k">:</span> { <span class="pl-k">...</span> [apptivity action input] },
+    data<span class="pl-k">:</span> { <span class="pl-k">...</span> [apptivity action output] }
+});</pre></div>
+
+<blockquote>
+<p><strong>prompt</strong> (<strong>process</strong>:<em>Process</em>, <strong>action</strong>:<em>String</em>, <strong>initialInput</strong>:<em>Mixed</em>)</p>
+
+<ul>
+<li>
+<code>"prompt"</code> event is dispatched when currently running workflow session is waiting for an <code>input</code>. It can be answered by calling <code>process.answer(myInput)</code> or manually calling <code>workflowSession.answer(myInput)</code> if workflow session is accessible.</li>
+</ul>
+
+<p><strong>answer</strong> (<strong>process</strong>:<em>Process</em>, <strong>action</strong>:<em>String</em>, <strong>newInput</strong>:<em>Mixed</em>)</p>
+
+<ul>
+<li>
+<code>"answer"</code> event is dispatched when workflow session <code>input</code> has been answered.</li>
+</ul>
+</blockquote>
+
+<h5>
+<a id="usecaseactivityactivitynamestringactivity" class="anchor" href="#usecaseactivityactivitynamestringactivity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>USECASE.activity(activityName:<em>String</em>):<em>Activity</em>
+</h5>
+
+<p>Defines an <code>Activity</code> used as option parameters of <code>condition</code> action or sub-processe parameters of <code>fork</code> action.</p>
+
+<p>This method is an alias of <a href="https://www.npmjs.com/package/apptivity#workflowactivityactivitynamestringactivity">apptivity.activity(name:String)</a> .</p>
+
+<h3>
+<a id="system-definition-object" class="anchor" href="#system-definition-object" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>System Definition Object</h3>
+
+<h4>
+<a id="systemdefinitionasactornamestring-contextcallbackfunctionactordefinition" class="anchor" href="#systemdefinitionasactornamestring-contextcallbackfunctionactordefinition" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>systemDefinition.as(actorName:<em>String</em>, [contextCallback:<em>Function</em>]):<em>ActorDefinition</em>
+</h4>
+
+<p>Creates an Actor if specified <code>actorName</code> actor do not exist and returns an <code>actorDefinition</code> object for chain-calling actor definitions.</p>
+
+<p>If <code>contextCallback</code> optional parameter is provided, it will be called with <code>ActorDefinition</code> object of <code>actorName</code> for further actor definition. This will come in handy when actor definitions are required from other module files.</p>
+
+<p><code>contextCallback</code> will be called with <code>actorDefinition</code> object as in:</p>
+
+<blockquote>
+<p><strong>contextCallback</strong>(<strong>actorDefinition</strong>:<em>ActorDefinition</em>)</p>
+</blockquote>
+
+<p>Example of using <code>contextCallback</code> to split <code>"guest"</code> actor definitions from <code>"system"</code>.</p>
+
+<p>file: <strong>/my-auth-website/index.js</strong></p>
+
+<div class="highlight highlight-source-js"><pre>
+<span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>use-case<span class="pl-pds">"</span></span>).
+    <span class="pl-en">system</span>(<span class="pl-s"><span class="pl-pds">"</span>My Auth Website<span class="pl-pds">"</span></span>).
+        <span class="pl-en">as</span>(<span class="pl-s"><span class="pl-pds">"</span>guest<span class="pl-pds">"</span></span>, <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>./actor/guest.js<span class="pl-pds">"</span></span>));</pre></div>
+
+<p>file: <strong>/my-auth-website/actor/guest.js</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">defineActor</span>(<span class="pl-smi">asGuest</span>) {
+    asGuest.
+        <span class="pl-en">accessing</span>(<span class="pl-s"><span class="pl-pds">"</span>public area<span class="pl-pds">"</span></span>).
+            <span class="pl-en">can</span>(<span class="pl-s"><span class="pl-pds">"</span>visit web pages<span class="pl-pds">"</span></span>).
+                <span class="pl-en">soThat</span>(<span class="pl-s"><span class="pl-pds">"</span>I will have an overview of the system.<span class="pl-pds">"</span></span>).
+
+            <span class="pl-en">can</span>(<span class="pl-s"><span class="pl-pds">"</span>login<span class="pl-pds">"</span></span>).
+                <span class="pl-en">soThat</span>(<span class="pl-s"><span class="pl-pds">"</span>I can change role and further control the system<span class="pl-pds">"</span></span>);
+};
+
+<span class="pl-c1">module</span>.<span class="pl-smi">exports</span> <span class="pl-k">=</span> defineActor;</pre></div>
+
+<h4>
+<a id="systemdefinitionsubjectsubjectnamestring-contextcallbackfunctionsubjectdefinition" class="anchor" href="#systemdefinitionsubjectsubjectnamestring-contextcallbackfunctionsubjectdefinition" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>systemDefinition.subject(subjectName:<em>String</em>, [contextCallback:<em>Function</em>]):<em>SubjectDefinition</em>
+</h4>
+
+<p>Creates Subject namespace if specified <code>subjectName</code> subject do not exist and returns <code>subjectDefinition</code> object for chain-calling subject definitions.</p>
+
+<p><code>contextCallback</code> will be called with <code>subjectDefinition</code> object as in:</p>
+
+<blockquote>
+<p><strong>contextCallback</strong>(<strong>subjectDefinition</strong>:<em>SubjectDefinition</em>)</p>
+</blockquote>
+
+<h4>
+<a id="systemdefinitionactivitysubjectstring-usecasestring-contextcallbackfunctionactivitydefinition" class="anchor" href="#systemdefinitionactivitysubjectstring-usecasestring-contextcallbackfunctionactivitydefinition" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>systemDefinition.activity(subject:<em>String</em>, usecase:<em>String</em>, [contextCallback:<em>Function</em>]):<em>ActivityDefinition</em>
+</h4>
+
+<p>Creates Subject and Use-case specified by <code>subject</code> and <code>usecase</code> parameters if they do not exist and returns <a href="https://www.npmjs.com/package/apptivity#workflownamestringsessionapi">Apptivity</a> workflow definition object to further detail the Use-case activity.</p>
+
+<p><code>contextCallback</code> will be called with <code>workflowActivity</code>, <code>subject</code> and <code>usecase</code> as in:</p>
+
+<blockquote>
+<p><strong>contextCallback</strong>(<strong>workflowActivity</strong>:<em>Activity</em>, <strong>subject</strong>:<em>String</em>, <strong>usecase</strong>:<em>String</em>)</p>
+</blockquote>
+
+<h3>
+<a id="actor-definition-object" class="anchor" href="#actor-definition-object" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Actor Definition Object</h3>
+
+<h4>
+<a id="actordefinitionemulatingactorstring-actorstring-actordefinition" class="anchor" href="#actordefinitionemulatingactorstring-actorstring-actordefinition" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>actorDefinition.emulating(actor:<em>String</em>, [actor:<em>String</em>, ...]):<em>ActorDefinition</em>
+</h4>
+
+<p>Generalize Actor by inheriting Use-cases specified by <code>actor</code> parameters.</p>
+
+<h4>
+<a id="actordefinitionaccessingsubjectnamestring-contextcallbackfunctionactordefinition" class="anchor" href="#actordefinitionaccessingsubjectnamestring-contextcallbackfunctionactordefinition" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>actorDefinition.accessing(subjectName:<em>String</em>, [contextCallback:<em>Function</em>]):<em>ActorDefinition</em>
+</h4>
+
+<p>Creates Subject namespace if specified <code>subjectName</code> subject do not exist and changes the default Subject context specified by <code>subjectName</code> parameter for the next Use-case chain-definitions. It returns <code>actorDefinition</code> object for chain-calling actor definitions.</p>
+
+<p><code>contextCallback</code> will be called with <code>actorDefinition</code> object as in:</p>
+
+<blockquote>
+<p><strong>contextCallback</strong>(<strong>actorDefinition</strong>:<em>ActorDefinition</em>)</p>
+</blockquote>
+
+<h4>
+<a id="actordefinitioncanusecasestring-contextcallbackfunctionactordefinition" class="anchor" href="#actordefinitioncanusecasestring-contextcallbackfunctionactordefinition" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>actorDefinition.can(usecase:<em>String</em>, [contextCallback:<em>Function</em>]):<em>ActorDefinition</em>
+</h4>
+
+<p>Creates Use-case within the default Subject context if specified <code>usecase</code> do not exist and returns <code>actorDefinition</code> object for chain-calling actor or use-case definitions.</p>
+
+<blockquote>
+<p><strong>Warning!</strong> calling this method without defining default Subject context with <code>actorDefinition.accessing(subjectName)</code> will result in a fatal error</p>
+</blockquote>
+
+<p><code>contextCallback</code> will be called with <code>actorDefinition</code> object as in:</p>
+
+<blockquote>
+<p><strong>contextCallback</strong>(<strong>actorDefinition</strong>:<em>ActorDefinition</em>)</p>
+</blockquote>
+
+<h4>
+<a id="actordefinitionsothatdescriptionstring-actordefinition" class="anchor" href="#actordefinitionsothatdescriptionstring-actordefinition" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>actorDefinition.soThat([description:<em>String</em>, ...]]):<em>ActorDefinition</em>
+</h4>
+
+<p>Describes the currently defined Use-case with <code>description</code> parameters for documentation purposes.</p>
+
+<blockquote>
+<p><strong>Warning!</strong> calling this method without defining default Subject and Use-case context with <code>actorDefinition.accessing(subjectName)</code> and <code>actorDefinition.can(usecase)</code> will result in a fatal error</p>
+</blockquote>
+
+<h3>
+<a id="subject-definition-object" class="anchor" href="#subject-definition-object" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Subject Definition Object</h3>
+
+<h4>
+<a id="subjectdefinitionusecaseusecasestring-contextcallbackfunctionsubjectdefinition" class="anchor" href="#subjectdefinitionusecaseusecasestring-contextcallbackfunctionsubjectdefinition" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>subjectDefinition.usecase(usecase:<em>String</em>, [contextCallback:<em>Function</em>]):<em>SubjectDefinition</em>
+</h4>
+
+<h4>
+<a id="subjectdefinitionextendsubjectstring-usecasestring-conditionfunctionsubjectdefinition" class="anchor" href="#subjectdefinitionextendsubjectstring-usecasestring-conditionfunctionsubjectdefinition" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>subjectDefinition.extend([subject:<em>String</em>,] usecase:<em>String</em>, [condition:<em>Function</em>]]):<em>SubjectDefinition</em>
+</h4>
+
+<h4>
+<a id="subjectdefinitionincludesubjectstring-usecasestringsubjectdefinition" class="anchor" href="#subjectdefinitionincludesubjectstring-usecasestringsubjectdefinition" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>subjectDefinition.include([subject:<em>String</em>,] usecase:<em>String</em>):<em>SubjectDefinition</em>
+</h4>
+
+<h4>
+<a id="subjectdefinitiongeneralizesubjectstring-usecasestringsubjectdefinition" class="anchor" href="#subjectdefinitiongeneralizesubjectstring-usecasestringsubjectdefinition" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>subjectDefinition.generalize([subject:<em>String</em>,] usecase:<em>String</em>):<em>SubjectDefinition</em>
+</h4>
+
+<h3>
+<a id="process-object" class="anchor" href="#process-object" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Process Object</h3>
+
+<h4>
+<a id="processinfopropertynamestringmixed" class="anchor" href="#processinfopropertynamestringmixed" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>process.info(propertyName:<em>String</em>):<em>Mixed</em>
+</h4>
+
+<h4>
+<a id="processcurrentstateobjectnull" class="anchor" href="#processcurrentstateobjectnull" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>process.currentState():<em>Object|null</em>
+</h4>
+
+<h4>
+<a id="processrundatamixedpromise" class="anchor" href="#processrundatamixedpromise" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>process.run(data:<em>Mixed</em>):<em>Promise</em>
+</h4>
+
+<h4>
+<a id="processrunoncedatamixedpromise" class="anchor" href="#processrunoncedatamixedpromise" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>process.runOnce(data:<em>Mixed</em>):<em>Promise</em>
+</h4>
+
+<h4>
+<a id="processresetprocess" class="anchor" href="#processresetprocess" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>process.reset():<em>Process</em>
+</h4>
+
+<h4>
+<a id="processcurrentprocess" class="anchor" href="#processcurrentprocess" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>process.current():<em>Process</em>
+</h4>
+
+<h4>
+<a id="processpreviousprocess" class="anchor" href="#processpreviousprocess" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>process.previous():<em>Process</em>
+</h4>
+
+<h4>
+<a id="processnextprocess" class="anchor" href="#processnextprocess" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>process.next():<em>Process</em>
+</h4>
+
+<h4>
+<a id="processsubscribeeventstringregexp-handlerfunctionfunction" class="anchor" href="#processsubscribeeventstringregexp-handlerfunctionfunction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>process.subscribe(event:<em>String|RegExp</em>, handler:<em>Function</em>):<em>Function</em>
+</h4>
+
+<h4>
+<a id="processanswerinputmixedprocess" class="anchor" href="#processanswerinputmixedprocess" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>process.answer(input:<em>Mixed</em>):<em>Process</em>
+</h4>
+
+<h4>
+<a id="processdestroyprocess" class="anchor" href="#processdestroyprocess" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>process.destroy():<em>Process</em>
+</h4>
+
+<p>(To be continued... very sleepy!)</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p><a href="https://opensource.org/licenses/MIT">MIT</a></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/diko316/use-case">Use-case</a> is maintained by <a href="https://github.com/diko316">diko316</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
