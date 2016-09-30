@@ -1,6 +1,6 @@
 # Use-case
 
-This library aims to effectively plan the software development by following [UML Use-case](https://en.wikipedia.org/wiki/Use_case) based from User Stories. Use-case manifests will be detailed later by adding use-case relationships and activity workflows using [Apptivity](https://github.com/diko316/apptivity) package.
+This library aims to solve problems in documenting large javascript software. It will enable software authors to document [UML Use-case](https://en.wikipedia.org/wiki/Use_case) while implementing their definitions before detailing them later with use-case relationships and activity workflows with [Apptivity](https://github.com/diko316/apptivity).
 
 
 ## Installation
